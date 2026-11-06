@@ -1,0 +1,58 @@
+{
+  "name": "spaceship-racer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "On-chain spaceship racing game for Terra Classic: CosmWasm contracts, wallet UI, indexer and local testnet tooling.",
+  "license": "ISC",
+  "author": "RenneBeau",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RenneBeau/spaceship-racer.git"
+  },
+  "engines": {
+    "node": ">=20.19.0 <25"
+  },
+  "scripts": {
+    "build": "node scripts/build-onchain.mjs",
+    "build:onchain": "npm run build",
+    "prestart": "npm run build",
+    "start": "node src/onchain/server.mjs",
+    "start:onchain": "node src/onchain/server.mjs",
+    "test": "node scripts/test-unit.mjs",
+    "test:unit": "npm test",
+    "test:integration": "node --test tests/onchain/manifest.test.mjs tests/onchain/http.test.mjs",
+    "test:browser": "playwright test --config tests/onchain/playwright.config.mjs",
+    "test:contracts": "cargo test --locked --manifest-path contracts/Cargo.toml --workspace",
+    "local:deps": "node scripts/setup-dex.mjs",
+    "local:build:dex": "bash contracts/local/build-dex.sh",
+    "local:build": "bash contracts/local/build.sh",
+    "local:up": "docker compose -f contracts/local/compose.yml up -d",
+    "local:stop": "docker compose -f contracts/local/compose.yml stop",
+    "local:smoke": "node contracts/local/smoke.mjs",
+    "local:stack": "node scripts/local-stack.mjs",
+    "alpha:up": "docker compose -f contracts/local/compose-alpha.yml up -d",
+    "alpha:deploy": "node contracts/local/deploy-alpha.mjs",
+    "alpha:start": "npm run build && node src/alpha/server.mjs"
+  },
+  "dependencies": {
+    "@cosmjs/cosmwasm-stargate": "0.38.1",
+    "@cosmjs/proto-signing": "0.38.1",
+    "@cosmjs/stargate": "0.38.1",
+    "@cosmjs/encoding": "0.38.1",
+    "@cosmjs/crypto": "0.38.1",
+    "@cosmjs/amino": "0.38.1",
+    "cosmjs-types": "0.11.0",
+    "express": "5.2.1",
+    "better-sqlite3": "12.8.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "esbuild": "0.28.2"
+  },
+  "overrides": {
+    "@cosmjs/encoding": {
+      "@scure/base": "2.0.0"
+    }
+  }
+}

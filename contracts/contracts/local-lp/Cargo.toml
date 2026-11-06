@@ -1,0 +1,12 @@
+[package]
+name = "racer-local-lp"
+version.workspace = true
+edition.workspace = true
+license = "GPL-3.0-only"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+cosmwasm-std.workspace = true
+cw20-mintable = { git = "https://github.com/PlasticDigits/cw20-mintable", rev = "73a206b5c39c5bd8f9d3574bda32fc5ae8f52ec8", features = ["library"] }

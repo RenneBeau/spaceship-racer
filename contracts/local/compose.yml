@@ -1,0 +1,22 @@
+name: spaceship-racer-dev
+services:
+  chain:
+    image: ghcr.io/plasticdigits/localterra-cl8y@sha256:309cdb1215135795ca47f2803cde6c1e7045afcfc6379dd6600bf578148ae81a
+    platform: linux/amd64
+    entrypoint: ["/bin/bash", "/local/start-chain.sh"]
+    environment:
+      CHAIN_ID: spaceship-racer-local
+      MONIKER: spaceship-racer-local
+      LOCAL_BLOCK_TIME: ${RACER_BLOCK_TIME:-6s}
+    ports:
+      - "127.0.0.1:27657:26657"
+      - "127.0.0.1:1417:1317"
+    volumes:
+      - ./start-chain.sh:/local/start-chain.sh:ro,z
+      - chain-data:/home/terra/.terra
+      - ../target/wasm32-unknown-unknown/release:/artifacts:ro,z
+      - ../../vendor/cl8y-dex-terraclassic/smartcontracts/target/wasm32-unknown-unknown/release:/dex-artifacts:ro,z
+volumes:
+  chain-data:
+    name: ${RACER_CHAIN_VOLUME:-spaceship-racer-dev_chain-data}
+    external: ${RACER_CHAIN_EXTERNAL:-false}

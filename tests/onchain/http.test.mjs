@@ -1,0 +1,71 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createIndexer } from '../../src/onchain/server.mjs';
+import { loadConfig } from '../../src/onchain/config.mjs';
+
+test('local HTTP service exposes pinned chain reads and rejects every signing/write route', async t => {
+  const config = { ...loadConfig(), database: ':memory:' };
+  const service = await createIndexer(config);
+  const server = service.app.listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  t.after(async () => { await new Promise(resolve => server.close(resolve)); await service.close(); });
+  const base = `http://127.0.0.1:${server.address().port}`;
+  const response = await fetch(`${base}/api/config`); const publicConfig = await response.json();
+  assert.equal(publicConfig.chainId, config.chainId); assert.equal(publicConfig.tokens.length, 5);
+  assert.equal(publicConfig.key_name, undefined); assert.equal(publicConfig.database, undefined);
+  if (publicConfig.previousGames.length) {
+    const oldResult = await fetch(`${base}/api/races/1`);
+    assert.equal(oldResult.status, 200); assert.equal((await oldResult.json()).result.race, 1);
+  }
+  const state = await (await fetch(`${base}/api/state`)).json(); assert.ok(state.height > 0); assert.ok(state.game.race > 0);
+  const profile = await (await fetch(`${base}/api/wallet/${publicConfig.contracts.game}`)).json();
+  assert.equal(profile.wallet, publicConfig.contracts.game); assert.deepEqual(profile.fleet.next, [0, 0, 0]);
+  assert.equal(profile.playerTick, 0);
+  const treasury = await (await fetch(`${base}/api/treasury`)).json();
+  assert.equal(treasury.treasury, publicConfig.contracts.capitalTreasury);
+  assert.equal(treasury.rewardPool, publicConfig.contracts.rewards);
+  assert.ok(treasury.balances.every(b => /^\d+$/.test(b.treasury) && /^\d+$/.test(b.rewardPool)));
+  assert.ok(Array.isArray(treasury.routes) && treasury.routes.length === 5);
+  const referrals = await (await fetch(`${base}/api/wallet/${publicConfig.contracts.game}/referrals`)).json();
+  assert.equal(referrals.sponsor, publicConfig.contracts.game); assert.ok(Array.isArray(referrals.referred));
+  assert.match(referrals.earnings, /^\d+$/);
+  const refunds = await (await fetch(`${base}/api/wallet/${publicConfig.contracts.game}/refunds`)).json();
+  assert.equal(refunds.wallet, publicConfig.contracts.game);
+  assert.equal(refunds.amount, '0'); assert.deepEqual(refunds.claims, []);
+  assert.equal(refunds.boostCount, 0); assert.equal(refunds.refundCredits, '0');
+  const boosts = await (await fetch(`${base}/api/wallet/${publicConfig.contracts.game}/boosts`)).json();
+  assert.equal(boosts.wallet, publicConfig.contracts.game); assert.deepEqual(boosts.items, []);
+  const recruitment = await (await fetch(`${base}/api/recruitment`)).json();
+  assert.match(recruitment.pullPrice, /^\d+$/); assert.ok(recruitment.catalogue.length >= 4);
+  const jobs = await (await fetch(`${base}/api/wallet/${publicConfig.contracts.game}/recruitment`)).json();
+  assert.deepEqual(jobs.items, []);
+  assert.equal((await fetch(`${base}/api/wallet/${publicConfig.contracts.game}/recruitment/1`)).status, 404);
+  const history = await (await fetch(`${base}/api/wallet/${publicConfig.contracts.game}/history`)).json();
+  assert.equal(history.wins, 0); assert.deepEqual(history.claims, []);
+  const clans = await (await fetch(`${base}/api/clans`)).json();
+  const board = await (await fetch(`${base}/api/leaderboards?scope=race&group=racers`)).json();
+  assert.ok(Array.isArray(board.items)); assert.ok(board.items.length > 0);
+  assert.ok(board.items.every(row => row.health && /^\d+$/.test(row.health.hp)));
+  const selected = board.items[0].wallet;
+  const targeted = await (await fetch(`${base}/api/leaderboards?scope=race&group=racers&wallet=${selected}`)).json();
+  assert.equal(targeted.items.find(row => row.wallet === selected).rocketChanceBps, 0);
+  const others = targeted.items.filter(row => row.wallet !== selected).sort((a, b) => BigInt(a.distance) > BigInt(b.distance) ? -1 : 1);
+  if (others.length >= 2) assert.ok(others[0].rocketChanceBps >= others.at(-1).rocketChanceBps);
+  const teams = await (await fetch(`${base}/api/leaderboards?scope=cycle&group=teams`)).json();
+  if (board.items.some(row => row.clanId === null)) assert.ok(teams.items.some(row => row.solo));
+  assert.equal((await fetch(`${base}/api/leaderboards?scope=invalid`)).status, 400);
+  const combat = await (await fetch(`${base}/api/combat?wallet=${selected}`)).json(); assert.ok(Array.isArray(combat.items));
+  if (clans.items.length) {
+    const detail = await (await fetch(`${base}/api/clans/${clans.items[0].id}`)).json();
+    assert.equal(detail.clan.id, clans.items[0].id); assert.ok(Array.isArray(detail.members));
+    const rewards = await (await fetch(`${base}/api/clans/${clans.items[0].id}/rewards`)).json();
+    assert.match(rewards.totals.spaceusd, /^\d+$/); assert.match(rewards.totals.srt, /^\d+$/);
+  }
+  assert.equal((await fetch(`${base}/profile`)).status, 200);
+  assert.equal((await fetch(`${base}/clans/1`)).status, 200);
+  for (const path of ['/api/tx', '/api/auth/login', '/api/game/boost', '/api/withdraw']) assert.equal((await fetch(`${base}${path}`, { method: 'POST', body: '{}' })).status, 405);
+  for (const path of ['/database.db', '/contracts/local/deployment.json', '/.env', '/src/onchain/config.mjs']) assert.equal((await fetch(`${base}${path}`)).status, 404);
+  assert.equal((await fetch(`${base}/api/wallet/not-a-wallet`)).status, 400);
+  assert.equal((await fetch(`${base}/api/activity?limit=10000`)).status, 400);
+  await service.indexer.syncOnce(20); assert.ok(service.store.head().height >= service.indexer.startHeight);
+});

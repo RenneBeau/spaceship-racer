@@ -1,0 +1,27 @@
+[package]
+name = "racer-reinvestment"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+serde = { version = "1.0", default-features = false, features = ["derive"] }
+cosmwasm-std.workspace = true
+cosmwasm-schema.workspace = true
+cw-storage-plus.workspace = true
+cw20.workspace = true
+cw2.workspace = true
+game-common.workspace = true
+racer-payments = { path = "../payments", features = ["library"] }
+racer-rewards = { path = "../rewards", features = ["library"] }
+racer-fleet = { path = "../fleet", features = ["library"] }
+
+[dev-dependencies]
+cw-multi-test.workspace = true
+cw20-base.workspace = true

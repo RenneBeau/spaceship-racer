@@ -1,0 +1,20 @@
+name: Bug report
+description: Report a reproducible issue in the game or development tools.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include expected behavior, actual behavior and reproduction steps.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, OS, wallet/version, local chain or hosted alpha.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or screenshots
+      description: Remove recovery phrases, private keys, cookies and private access URLs.

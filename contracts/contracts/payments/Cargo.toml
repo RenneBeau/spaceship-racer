@@ -1,0 +1,31 @@
+[package]
+name = "racer-payments"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-std.workspace = true
+cosmwasm-schema.workspace = true
+cw-storage-plus.workspace = true
+cw2.workspace = true
+cw20.workspace = true
+game-common.workspace = true
+racer-fleet = { path = "../fleet", features = ["library"] }
+
+[dev-dependencies]
+cw-multi-test.workspace = true
+cw20-base.workspace = true
+racer-pause = { path = "../pause" }
+racer-treasury = { path = "../treasury" }
+cl8y-dex-factory = { git = "https://github.com/PlasticDigits/cl8y-dex-terraclassic", rev = "8e865d3721231189cbad1730c7a24698038c9cfb", features = ["library"] }
+cl8y-dex-router = { git = "https://github.com/PlasticDigits/cl8y-dex-terraclassic", rev = "8e865d3721231189cbad1730c7a24698038c9cfb", features = ["library"] }
+cl8y-dex-pair = { git = "https://github.com/PlasticDigits/cl8y-dex-terraclassic", rev = "8e865d3721231189cbad1730c7a24698038c9cfb", features = ["library"] }
+dex-common = { git = "https://github.com/PlasticDigits/cl8y-dex-terraclassic", rev = "8e865d3721231189cbad1730c7a24698038c9cfb" }
+cw20-mintable = { git = "https://github.com/PlasticDigits/cw20-mintable", rev = "73a206b5c39c5bd8f9d3574bda32fc5ae8f52ec8", features = ["library"] }

@@ -1,0 +1,325 @@
+@font-face { font-family: Rajdhani; font-style: normal; font-weight: 600; font-display: swap; src: url('/assets/ui/rajdhani-semibold.woff2') format('woff2'); }
+@font-face { font-family: Rajdhani; font-style: normal; font-weight: 700; font-display: swap; src: url('/assets/ui/rajdhani-bold.woff2') format('woff2'); }
+:root { --flight-cyan: #8ae7f2; --flight-gold: #f1c27a; --flight-line: #5d94ac70; --flight-glass: #071222c9; }
+body { background: #050a14; }
+.stars { background: linear-gradient(#030713ba, #030713ef), url('/assets/ui/scene-nebula.webp') center / cover fixed; opacity: 1; }
+h1, h2, h3, .brand, .tabs button, .mobile-game-nav button { font-family: Rajdhani, 'Arial Narrow', sans-serif; }
+h1, h2, h3 { letter-spacing: .5px; }
+.topbar { background: #050b15f2; border-bottom-color: #416076; box-shadow: 0 5px 25px #0005; }
+.brand { font-size: 22px; letter-spacing: 1.6px; font-weight: 700; }
+.brand .accent { color: #f2c27b; }
+.brand > svg { color: #f2c27b; }
+.brand small { font: 9px system-ui; color: #8098b3; letter-spacing: 2px; }
+.connection #connect { background: linear-gradient(#f6d599, #d4a15e); border-color: #ffdfaa; color: #211b13; }
+.shell { max-width: 1760px; padding: 0 24px; }
+.tabs { background: #050c18e8; border-bottom: 1px solid #44637770; padding: 7px 0; }
+.tabs button, .tabs button:nth-child(n) { border-radius: 0; border: 0; border-bottom: 2px solid transparent; text-transform: uppercase; font-size: 15px; font-weight: 600; letter-spacing: 1px; color: #98b0c9; }
+.tabs button.selected { background: #e3b2660b !important; border-color: #e7b86b; color: #f3d6a7; box-shadow: none; }
+.chainbar { font-size: 10px; padding: 6px 0; color: #637f9b; }
+.view-tools { margin: 7px 0 10px; }
+.view-tools .guide-toolbar > button, .view-tools .spectator-tools summary { min-height: 30px; padding: 5px 10px; font-size: 10px; background: #0d1b2b; border-color: #31516a; border-radius: 3px; color: #9fbcd4; }
+.view-tools .info-button { width: 28px; height: 28px; min-width: 28px; }
+.panel, .card { border-radius: 5px; border-color: #3e5d7570; background: linear-gradient(135deg, #102039e8, #081322eb); }
+.panel h2 { font-size: 23px; }
+.race-workspace { display: block; margin-bottom: 14px; }
+.race-main.scene-shell { --action-accent: #8ce8ec; display: block; position: relative; isolation: isolate; gap: 0; border: 1px solid #6193ab9c; border-radius: 6px; overflow: hidden; background: linear-gradient(180deg, #03091715 0%, #03091725 40%, #03091791 78%, #030917 100%), url('/assets/ui/scene-nebula.webp') center 45% / cover; box-shadow: 0 16px 60px #0008, inset 0 0 60px #0004; }
+.scene-shell:has(form[data-kind="acceleration"]) { --action-accent: #f3be76; }
+.scene-shell:has(form[data-kind="temporary"]) { --action-accent: #c0a6fc; }
+.scene-shell:has(form[data-kind="rocket"]) { --action-accent: #f5ac91; }
+.scene-shell:has(form[data-kind="heal"]) { --action-accent: #a4e5ca; }
+.scene-shell .arena { height: 580px; min-height: 580px; position: relative; overflow: hidden; margin: 0; padding: 0; border: 0; border-radius: 0; background: radial-gradient(ellipse at 50% 43%, #0000 22%, #02071148 80%), linear-gradient(180deg, #03071124, #03071110 55%, #03071191); box-shadow: none; }
+.scene-shell .arena::before { content: ''; position: absolute; inset: 100px -120px 90px; background: repeating-linear-gradient(174deg, transparent 0, transparent 94px, #adf5ff00 95px, #adf5ff60 96px, transparent 97px, transparent 170px); opacity: .2; transform: translateX(0); animation: deep-space-drift 8s linear infinite; pointer-events: none; }
+.scene-shell .arena::after { content: ''; position: absolute; inset: 9px; border: 1px solid #83b8d62b; border-top-color: #83b8d66b; clip-path: polygon(0 0, 19% 0, 19% 1px, 1px 1px, 1px 20%, 0 20%, 0 0, 81% 0, 100% 0, 100% 20%, calc(100% - 1px) 20%, calc(100% - 1px) 1px, 81% 1px); pointer-events: none; }
+.scene-shell .arena-heading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.scene-hud { display: grid; grid-template-columns: minmax(320px, 1.15fr) 110px minmax(300px, 1fr); align-items: center; gap: 18px; position: absolute; z-index: 4; top: 15px; left: 20px; right: 20px; padding: 10px 15px; background: linear-gradient(90deg, #040b15e8, #08182be8, #040b15e0); border-top: 1px solid #7eb2cf82; border-bottom: 1px solid #7eb2cf48; box-shadow: 0 10px 35px #0003; }
+.scene-hud > .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; }
+.scene-hud .stat { border: 0; border-radius: 0; border-right: 1px solid #517b982e; padding: 0 12px; background: none; min-width: 0; }
+.scene-hud .stat:first-child { padding-left: 0; }
+.scene-hud .stat span { font: 600 10px Rajdhani, sans-serif; letter-spacing: 1.6px; color: #8aadc7; }
+.scene-hud .stat strong { display: block; font: 600 28px/1.1 Rajdhani, sans-serif; color: #edf9ff; letter-spacing: 1px; }
+.scene-hud .stat small { display: block; font: 10px Rajdhani, sans-serif; color: #789bb8; white-space: nowrap; }
+.scene-hud .race-stakes { position: relative; display: block; margin: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.scene-hud .multiplier-badge { min-width: 0; }
+.scene-hud .multiplier-badge > span { font: 600 9px Rajdhani, sans-serif; letter-spacing: 1px; color: #c7a76f; }
+.scene-hud .multiplier-badge > strong { font: 700 39px/.95 Rajdhani, sans-serif; letter-spacing: 0; color: #ffe0a7; text-shadow: 0 0 22px #e4b16560; }
+.scene-hud .multiplier-badge > small { font: 600 8px Rajdhani, sans-serif; letter-spacing: 1px; color: #b49561; }
+.scene-hud .stakes-copy { display: none; }
+.scene-odds { position: absolute; right: -5px; top: 19px; padding: 0; width: 20px; height: 20px; min-height: 20px; border: 1px solid #a18c5766; border-radius: 50%; background: #30271888; color: #e4c28c; font: 12px Georgia, serif; }
+.scene-hud .cycle-pools { position: relative; padding: 0 0 0 17px; margin: 0; border: 0; border-left: 1px solid #517b984d; background: none; border-radius: 0; box-shadow: none; }
+.scene-hud .cycle-pools .section-head { position: absolute; top: 0; right: -2px; margin: 0; }
+.scene-hud .cycle-pools h2 { display: none; }
+.scene-hud .cycle-pools .info-button { min-width: 19px; width: 19px; min-height: 19px; height: 19px; font-size: 11px; color: #8fb3d0; background: transparent; border-color: #547b9c66; }
+.scene-hud .cycle-pool-values { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding-right: 22px; }
+.scene-hud .cycle-pool-values > div { padding: 0; border: 0; border-radius: 0; background: none; }
+.scene-hud .cycle-pool-values small { font: 600 10px Rajdhani, sans-serif; text-transform: uppercase; letter-spacing: 1px; color: #8cabc4; }
+.scene-hud .cycle-pool-values strong { font: 600 clamp(21px, 2vw, 30px)/1.2 Rajdhani, sans-serif; letter-spacing: .5px; color: #f6d299; margin-top: 3px; }
+.scene-hud .cycle-pool-values > div:first-child strong { color: #b6edfc; }
+.scene-pilot { position: absolute; z-index: 3; top: 104px; left: 25px; display: flex; align-items: center; gap: 10px; }
+.scene-commander { position: relative; display: grid; place-items: center; width: 48px; height: 58px; background: linear-gradient(#182a3dba, #09172880); border-left: 2px solid #a6dcf1a1; border-bottom: 1px solid #799eb54d; overflow: hidden; }
+.scene-commander > svg { width: 26px; height: 26px; color: #7393b3; }
+.scene-commander:has(img:not([hidden])) > svg { display: none; }
+.scene-commander img { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: drop-shadow(0 3px 6px #0008); }
+.scene-pilot small { display: block; color: #80a7c8; font: 600 9px Rajdhani, sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+.scene-pilot strong { display: block; color: #e8f6ff; font: 600 20px Rajdhani, sans-serif; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 2px 8px #000; }
+.scene-state { position: absolute; top: 111px; right: 25px; z-index: 3; display: flex; gap: 7px; align-items: center; padding: 6px 9px; background: #07162a9c; border-left: 2px solid #78d0ba; font: 600 11px Rajdhani, sans-serif; letter-spacing: 1px; text-transform: uppercase; color: #b4e1d5; }
+.scene-state::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #8ce3bc; box-shadow: 0 0 8px #66dfaf80; }
+.scene-state[data-mode="paused"] { color: #e7c28d; border-color: #e7c28d; }
+.scene-state[data-mode="paused"]::before { background: #e7c28d; }
+.scene-shell .arena .race-fleet { position: absolute; z-index: 2; top: 150px; bottom: 92px; left: 4%; right: 4%; width: auto; min-height: 0; margin: 0; padding: 0; display: block; background: none; overflow: visible; }
+.scene-shell .arena .race-fleet::before { display: none; }
+.scene-shell .arena .race-ship { position: absolute; width: 28%; padding: 0; border: 0; background: none; }
+.scene-shell .arena .race-ship.racer { width: 32%; left: 34%; top: -20px; }
+.scene-shell .arena .race-ship.tank { left: 2%; top: 35px; }
+.scene-shell .arena .race-ship.fighter { right: 2%; top: 40px; }
+.scene-shell .arena .race-ship > img { width: 100%; height: 210px; filter: drop-shadow(0 10px 12px #000a) drop-shadow(-12px 3px 18px #94d9ff25); animation: formation-drift 5s ease-in-out infinite; }
+.scene-shell .arena .race-ship.racer > img { height: 245px; animation-duration: 4.8s; }
+.scene-shell .arena .race-ship.tank > img { animation-delay: -1.5s; animation-duration: 5.8s; }
+.scene-shell .arena .race-ship.fighter > img { animation-delay: -3s; animation-duration: 4.6s; }
+.scene-shell .arena .race-ship > strong { position: relative; display: table; margin: 0 auto; padding: 3px 9px; border-left: 1px solid #85b7d96e; background: #06101d7a; font: 600 12px Rajdhani, sans-serif; letter-spacing: 1.2px; color: #c2d9ec; text-shadow: 0 2px 3px #000; }
+.scene-shell .arena .race-ship::before { top: 38%; left: 0; width: 60%; height: 20px; background: linear-gradient(90deg, transparent, #7be4ff32 55%, #d6faff77); box-shadow: none; transform-origin: right; filter: blur(4px); animation: thruster-flow 1.7s ease-in-out infinite; }
+.scene-shell .arena .race-ship > .vital-bar { width: min(180px, 95%); margin: 6px auto; padding: 0 5px; background: #040c16b0; }
+.scene-shell .vital-label { font: 600 10px Rajdhani, sans-serif; color: #98bdd7; margin-bottom: 3px; }
+.scene-shell .vital-label strong { font: 600 11px Rajdhani, sans-serif; color: #d6eafa; }
+.scene-shell .vital-track { height: 4px; border-radius: 0; background: #243e52ba; box-shadow: 0 1px 3px #000; }
+.scene-shell .vital-track > span { border-radius: 0; box-shadow: 0 0 6px #9ed57c60; }
+.scene-shell .arena .race-ship.absent > img { opacity: .25; animation: none; filter: grayscale(.8); }
+.scene-shell .arena .race-ship.destroyed > img { opacity: .4; animation: none; filter: grayscale(1) drop-shadow(0 8px 15px #000); }
+.scene-shell .arena .race-ship.absent::before, .scene-shell .arena .race-ship.destroyed::before { display: none; }
+.scene-shell .arena .race-ship > small { color: #86a9c5; font-size: 10px; background: #040c1690; }
+.scene-shell #pilot-stats { position: absolute; z-index: 3; bottom: 15px; left: 20px; right: 20px; display: grid; grid-template-columns: 1.7fr repeat(4, 1fr); gap: 0; padding: 11px 14px; border-top: 1px solid #6a9fb86b; border-bottom: 1px solid #6a9fb83b; background: linear-gradient(90deg, #040b16d9, #09182ad6); }
+.scene-shell #pilot-stats > div { padding: 0 14px; border: 0; border-left: 1px solid #4467814f; border-radius: 0; background: none; min-width: 0; }
+.scene-shell #pilot-stats > div:first-child { display: none; }
+.scene-shell #pilot-stats > div:nth-child(2) { grid-column: auto; grid-row: auto; border-left: 0; padding-left: 0; }
+.scene-shell #pilot-stats span { color: #84a6c4; font: 600 10px Rajdhani, sans-serif; letter-spacing: 1.4px; text-transform: uppercase; }
+.scene-shell #pilot-stats strong { font: 600 24px/1.2 Rajdhani, sans-serif; color: #c7edff; letter-spacing: .6px; white-space: nowrap; }
+.scene-shell #pilot-stats #pilot-distance { font-size: 32px; color: #ecfaff; text-shadow: 0 0 22px #68c4ee40; }
+.scene-shell #pilot-stats #pilot-score { color: #f6d29a; }
+.scene-shell #race-detail, .scene-shell .arena-shortcuts { display: none; }
+.scene-shell .armory { position: relative; z-index: 4; display: grid; grid-template-columns: minmax(420px, 1fr) minmax(340px, 1.05fr); grid-template-areas: 'skills detail' 'purchase detail' 'rules detail'; align-items: start; gap: 11px 24px; margin: 0; padding: 18px 24px 16px; background: linear-gradient(180deg, #081423eb, #030a13fa); border: 0; border-top: 1px solid #80b4cd75; border-radius: 0; box-shadow: 0 -10px 30px #0004; }
+.scene-shell .armory::before { content: ''; position: absolute; top: -1px; left: 6%; width: 20%; height: 2px; background: var(--action-accent); box-shadow: 0 0 15px var(--action-accent); opacity: .65; }
+.scene-shell .boost-grid { grid-area: skills; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin: 0; }
+.scene-shell .boost-card { display: flex; align-items: center; text-align: center; padding: 0 3px 6px; min-height: 0; gap: 3px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; box-shadow: none; color: #b4d0e5; }
+.scene-shell .boost-card[data-boost="heal"] { grid-column: auto; }
+.scene-shell .boost-card.selected { background: linear-gradient(transparent 60%, #78d8ef13); border-bottom-color: var(--boost-accent); box-shadow: none; }
+.scene-shell .boost-card[data-boost="acceleration"] { --boost-accent: #f3bd6e; }
+.scene-shell .boost-card[data-boost="temporary"] { --boost-accent: #bfa3ff; }
+.scene-shell .boost-card[data-boost="rocket"] { --boost-accent: #f1a272; }
+.scene-shell .boost-card[data-boost="speed"] { --boost-accent: #82e6ed; }
+.scene-shell .boost-icon { position: relative; width: 74px; height: 69px; display: block; margin: 0 0 3px; background: linear-gradient(145deg, #bcdbe559, #274b6277, #071627); clip-path: polygon(25% 0, 75% 0, 100% 24%, 100% 76%, 75% 100%, 25% 100%, 0 76%, 0 24%); filter: brightness(.75) saturate(.75); transition: filter .2s, transform .2s; }
+.scene-shell .boost-icon img { position: absolute; inset: 2px; width: calc(100% - 4px); height: calc(100% - 4px); object-fit: cover; clip-path: inherit; }
+.scene-shell .boost-card[data-boost="heal"] .boost-icon img { object-fit: contain; }
+.scene-shell .boost-icon > svg { position: absolute; top: 22px; left: 23px; width: 28px; height: 28px; color: #d2ffeb; filter: drop-shadow(0 0 8px #72e9c4); }
+.scene-shell .boost-card.selected .boost-icon, .scene-shell .boost-card:hover .boost-icon { filter: brightness(1.15) saturate(1.12); transform: translateY(-3px); }
+.scene-shell .boost-card strong { font: 600 15px/1.1 Rajdhani, sans-serif; letter-spacing: .5px; color: #e0edf9; }
+.scene-shell .boost-card small { display: none; }
+.scene-shell .boost-card-stat { margin-top: 1px; color: var(--boost-accent); font: 600 10px/1.35 Rajdhani, sans-serif; letter-spacing: .2px; }
+.scene-shell .armory .inline-form { grid-area: purchase; display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 12px; margin: 0; }
+.scene-shell .armory .inline-form label { font: 600 10px Rajdhani, sans-serif; letter-spacing: 1px; text-transform: uppercase; color: #84a4c1; gap: 4px; }
+.scene-shell .armory .inline-form input { width: 100%; min-width: 0; min-height: 38px; height: 38px; padding: 7px 10px; border: 1px solid #527b9278; border-radius: 2px; background: #020811a6; font: 600 18px Rajdhani, sans-serif; color: #e5f5ff; }
+.scene-shell .armory .inline-form button { min-height: 38px; height: 38px; border: 1px solid var(--action-accent); border-radius: 2px; background: linear-gradient(#e8faff, #90c7d7); color: #092132; font: 700 16px Rajdhani, sans-serif; letter-spacing: .5px; box-shadow: 0 0 20px #88dbf013, inset 0 1px 0 #fff9; }
+.scene-shell .armory .inline-form button:disabled { color: #94a9ba; opacity: .65; background: #1b2c3e; border-color: #486177; box-shadow: none; }
+.scene-shell .boost-preview { grid-area: detail; align-self: stretch; padding: 0 0 0 24px; margin: 0; border: 0; border-left: 1px solid #587f995c; background: none; border-radius: 0; }
+.scene-shell .boost-preview-heading { display: grid; grid-template-columns: 1fr auto auto; gap: 4px 10px; align-items: center; }
+.scene-shell .boost-preview-heading > span { grid-column: 1; grid-row: 1; font: 600 12px Rajdhani, sans-serif; letter-spacing: .7px; color: #b8cfdf; }
+.scene-shell .boost-preview-heading > strong { grid-column: 1 / -1; font: 600 22px/1.15 Rajdhani, sans-serif; color: var(--action-accent); margin: 2px 0 6px; }
+.scene-shell .boost-details-button { grid-column: 2; grid-row: 1; font: 600 11px Rajdhani, sans-serif; text-transform: uppercase; letter-spacing: 1px; padding: 0 7px; min-height: 24px; margin: 0; color: #9bbad1; border: 1px solid #48688270; border-radius: 2px; }
+.scene-shell .dock-help { grid-column: 3; grid-row: 1; min-width: 22px; width: 22px; height: 22px; min-height: 22px; font-size: 11px; }
+.scene-shell #boost-effect { margin: 4px 0 10px; font-size: 11px; color: #93abc3; line-height: 1.55; }
+.scene-shell .boost-stat-grid { grid-template-columns: 1fr 1fr; gap: 9px 20px; margin: 6px 0 12px; }
+.scene-shell .boost-stat-grid > div { padding: 0; border: 0; border-radius: 0; background: none; }
+.scene-shell .boost-stat-grid dt { font: 600 10px Rajdhani, sans-serif; color: #6e91af; letter-spacing: .5px; margin-bottom: 0; }
+.scene-shell .boost-stat-grid dd { font: 600 19px/1.15 Rajdhani, sans-serif; color: #dceeff; }
+.scene-shell .boost-preview #boost-availability { margin: 6px 0 2px; padding: 0; border: 0; font-size: 10px; color: #d3bd8f; }
+.scene-shell .boost-preview #boost-availability.ready { color: #9dd0b2; }
+.scene-shell .boost-preview > small { font-size: 9px; color: #65839f; }
+.scene-shell #boost-rules { grid-area: rules; margin: 0; font-size: 9px; color: #66849f; line-height: 1.5; }
+.race-console { border: 1px solid #46678363; border-top: 0; border-radius: 0 0 4px 4px; background: #06101bdb; }
+.console-tabs { display: flex; gap: 0; border-bottom: 1px solid #44678066; background: #081321e6; }
+.console-tabs button { min-width: 130px; padding: 12px 20px; background: none; border: 0; border-right: 1px solid #3c607a40; border-bottom: 2px solid transparent; border-radius: 0; color: #7798b5; font: 600 16px Rajdhani, sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+.console-tabs button.selected { color: #c9ecfb; background: #1c3b4c59; border-bottom-color: #7fcae8; }
+.race-console .standings-panel, .race-console > .panel { padding: 20px; margin: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.race-console .score-row { background: #10213380; border-color: #365b744f; border-radius: 2px; }
+.race-console .score-row.own { background: #19352966; border-color: #8caf6d70; }
+.race-console .score-rank, .race-console .score-metric strong { font-family: Rajdhani, sans-serif; }
+.race-console .race-sidebar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: start; gap: 15px; padding: 20px; }
+.race-console .race-sidebar > .panel { padding: 16px; min-width: 0; background: #0b1b2a8c; border: 1px solid #42657d5e; border-radius: 3px; box-shadow: none; }
+.personal-estimate .cycle-your-rewards { grid-template-columns: 1fr; border-top: 0; margin-top: 0; padding-top: 5px; }
+.personal-estimate .cycle-your-rewards strong { font: 600 24px Rajdhani, sans-serif; }
+.personal-estimate .cycle-your-rewards small { color: #91acc5; }
+.personal-estimate .text-button { font: 600 13px Rajdhani, sans-serif; }
+.race-console #combat-history { max-height: 280px; overflow: auto; }
+.recent-actions { margin-top: 20px; border-top: 1px solid #33516c66; padding-top: 16px; }
+.recent-actions h3 { font-size: 19px; }
+.recent-actions .boost-feedback { max-height: 220px; overflow: auto; }
+.recent-actions .boost-receipt { background: #11213480; border-radius: 2px; }
+.boost-calculation { width: min(440px, calc(100vw - 24px)); }
+.boost-calculation .boost-stat-grid { grid-template-columns: 1fr 1fr; }
+#scene-action-feedback { position: absolute; z-index: 5; left: 50%; top: 34%; transform: translate(-50%, 10px); max-width: 85%; padding: 7px 20px; opacity: 0; background: linear-gradient(90deg, transparent, #061829d9 20%, #061829d9 80%, transparent); color: #b9f6ff; font: 700 24px Rajdhani, sans-serif; letter-spacing: 1px; text-align: center; pointer-events: none; text-shadow: 0 0 18px #70c9fa; }
+.arena.action-feedback #scene-action-feedback { animation: action-readout 3.2s ease both; }
+.arena.action-feedback .race-ship:not(.destroyed):not(.absent)::before { filter: blur(3px) brightness(1.5); }
+[data-panel="hangar"] .hangar-intro { padding: 24px; min-height: 175px; border: 1px solid #456e8a70; background: linear-gradient(90deg, #061322ea 5%, #06132230 75%), url('/assets/ui/scene-hangar.webp') center 42% / cover; }
+[data-panel="hangar"] .hangar-intro h1 { font: 700 42px Rajdhani, sans-serif; color: #dfedf9; }
+[data-panel="inventory"] .recruitment-bay { background: linear-gradient(90deg, #0a1225ef 20%, #0a122595), url('/assets/ui/scene-commanders.webp') center / cover; }
+.game-dialog { background: linear-gradient(145deg, #102136f5, #06101df9); border-radius: 5px; border-color: #6b9bbb; }
+.game-dialog h2 { font-family: Rajdhani, sans-serif; letter-spacing: .6px; }
+.race-end-dialog { background: linear-gradient(#06101bc7, #06101bf5), url('/assets/ui/scene-nebula.webp') center / cover; }
+.race-end-dialog .finish-animation { border-color: #d8c497; }
+.race-end-dialog #race-end-summary > h3 { font: 700 32px Rajdhani, sans-serif; color: #f2d5a1; }
+.info-card { background: #0b1c2ef7; border-color: #628ba8; border-radius: 5px; }
+.info-card h3 { font: 600 23px Rajdhani, sans-serif; }
+.alpha-notice { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 8px 0; padding: 10px 14px; border: 1px solid #557495; background: #0a2235e8; }
+.alpha-notice strong { display: block; font: 600 17px Rajdhani, sans-serif; color: #b1e8ff; }
+.alpha-notice span { display: block; font-size: 10px; color: #92b4d2; }
+.alpha-notice button { flex-shrink: 0; font: 600 15px Rajdhani, sans-serif; background: #cce9f5; color: #092032; }
+.alpha-faucet-dialog { width: min(600px, calc(100vw - 24px)); }
+.alpha-faucet-dialog p, .alpha-faucet-dialog li { font-size: 12px; line-height: 1.7; color: #afc9de; }
+#alpha-faucet-form { display: grid; gap: 12px; margin: 20px 0; }
+#alpha-faucet-status { font-size: 12px; color: #b4e6ba; overflow-wrap: anywhere; }
+@keyframes deep-space-drift { from { transform: translateX(0); } to { transform: translateX(-170px); } }
+@keyframes formation-drift { 0%, 100% { transform: translate(0, 0) rotate(-1deg); } 50% { transform: translate(8px, -10px) rotate(1deg); } }
+@keyframes thruster-flow { 0%, 100% { opacity: .45; transform: scaleX(.85); } 50% { opacity: .8; transform: scaleX(1.05); } }
+@keyframes action-readout { 0%, 100% { opacity: 0; transform: translate(-50%, 10px); } 12%, 70% { opacity: 1; transform: translate(-50%, 0); } }
+@media (min-width: 1500px) {
+  .scene-shell .arena { height: 610px; }
+  .scene-shell .arena .race-fleet { top: 165px; }
+  .scene-shell .arena .race-ship > img { height: 245px; }
+  .scene-shell .arena .race-ship.racer > img { height: 275px; }
+}
+@media (max-width: 1100px) {
+  .scene-hud { grid-template-columns: minmax(280px, 1fr) 80px minmax(250px, 1fr); gap: 10px; padding: 10px; left: 12px; right: 12px; }
+  .scene-hud .stat { padding: 0 8px; }
+  .scene-hud .stat strong { font-size: 25px; }
+  .scene-hud .cycle-pool-values { gap: 8px; }
+  .scene-hud .cycle-pool-values strong { font-size: 24px; }
+  .scene-hud .cycle-pool-values small { font-size: 9px; }
+  .scene-shell .armory { grid-template-columns: minmax(360px, 1fr) minmax(290px, 1fr); gap: 12px 18px; padding: 16px; }
+  .scene-shell .boost-icon { width: 62px; height: 62px; }
+  .scene-shell .boost-icon > svg { top: 18px; left: 19px; width: 24px; height: 24px; }
+  .scene-shell .boost-card strong { font-size: 13px; }
+  .scene-shell .boost-card-stat { font-size: 9px; }
+  .race-console .race-sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 850px) {
+  .shell { padding: 0 14px; }
+  .scene-hud { grid-template-columns: minmax(220px, 1fr) 65px minmax(215px, 1fr); gap: 8px; }
+  .scene-hud .stat strong { font-size: 23px; }
+  .scene-hud .stat small { font-size: 8px; }
+  .scene-hud .cycle-pools { padding-left: 8px; }
+  .scene-hud .cycle-pool-values strong { font-size: 21px; }
+  .scene-hud .cycle-pool-values small { font-size: 8px; }
+  .scene-shell .arena .race-ship > img { height: 185px; }
+  .scene-shell .arena .race-ship.racer > img { height: 220px; }
+  .scene-shell .arena .race-ship.tank { top: 45px; }
+  .scene-shell .arena .race-ship.fighter { top: 50px; }
+  .scene-shell .armory { grid-template-columns: minmax(310px, 1fr) minmax(260px, 1fr); gap: 12px 14px; padding: 15px; }
+  .scene-shell .boost-preview { padding-left: 15px; }
+  .scene-shell .boost-preview-heading > strong { font-size: 20px; }
+  .scene-shell #pilot-stats strong { font-size: 21px; }
+  .scene-shell #pilot-stats #pilot-distance { font-size: 29px; }
+}
+@media (max-width: 640px) {
+  .brand { font-size: 17px; letter-spacing: .5px; }
+  .brand > svg { width: 17px; height: 17px; }
+  .shell { padding: 0 9px; }
+  .topbar { box-shadow: 0 3px 15px #0007; }
+  .tabs { padding: 5px 0; }
+  .tabs button, .tabs button:nth-child(n) { font-size: 13px; padding: 8px 10px; letter-spacing: .5px; }
+  .chainbar { padding: 4px 0; font-size: 9px; }
+  .view-tools { margin: 5px 0 8px; }
+  .view-tools .guide-toolbar > button, .view-tools .spectator-tools summary { font-size: 9px; min-height: 28px; }
+  .scene-shell .arena { height: 490px; min-height: 490px; }
+  .scene-hud { top: 10px; left: 10px; right: 10px; display: grid; grid-template-columns: minmax(0, 1fr) 62px; gap: 8px 5px; padding: 7px 9px; }
+  .scene-hud > .stats { grid-column: 1; grid-row: 1; }
+  .scene-hud .stat { position: relative; padding: 0 6px; }
+  .scene-hud .stat span { font-size: 8px; letter-spacing: .7px; }
+  .scene-hud .stat strong { font-size: 21px; letter-spacing: .3px; }
+  .scene-hud .stat small { position: absolute; top: 100%; left: 6px; font-size: 7px; letter-spacing: 0; }
+  .scene-hud .race-stakes { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .scene-hud .multiplier-badge > strong { font-size: 33px; }
+  .scene-hud .multiplier-badge > span { font-size: 7px; letter-spacing: 0; }
+  .scene-hud .multiplier-badge > small { font-size: 7px; letter-spacing: 0; }
+  .scene-odds { width: 15px; height: 15px; min-height: 15px; right: -5px; top: -6px; font-size: 9px; }
+  .scene-hud .cycle-pools { grid-column: 1; grid-row: 2; border-left: 0; border-top: 1px solid #4e78904d; padding: 5px 0 0; }
+  .scene-hud .cycle-pools .section-head { top: 8px; right: 0; }
+  .scene-hud .cycle-pool-values { gap: 12px; padding-right: 15px; }
+  .scene-hud .cycle-pool-values small { font-size: 8px; letter-spacing: .4px; }
+  .scene-hud .cycle-pool-values strong { font-size: 22px; line-height: 1; margin-top: 3px; }
+  .scene-hud .cycle-pools .info-button { min-width: 15px; width: 15px; min-height: 15px; height: 15px; font-size: 9px; }
+  .scene-pilot { top: 121px; left: 15px; gap: 7px; }
+  .scene-commander { width: 30px; height: 38px; }
+  .scene-pilot small { font-size: 8px; letter-spacing: 1px; }
+  .scene-pilot strong { font-size: 16px; max-width: 145px; }
+  .scene-state { top: 130px; right: 13px; font-size: 9px; letter-spacing: .3px; padding: 4px 6px; }
+  .scene-state::before { width: 4px; height: 4px; }
+  .scene-shell .arena .race-fleet { top: 176px; bottom: 92px; left: 1%; right: 1%; margin: 0; padding: 0; }
+  .scene-shell .arena .race-ship { width: 29%; }
+  .scene-shell .arena .race-ship.racer { width: 38%; left: 31%; top: -12px; }
+  .scene-shell .arena .race-ship.tank { left: 0; top: 28px; }
+  .scene-shell .arena .race-ship.fighter { right: 0; top: 29px; }
+  .scene-shell .arena .race-ship > img { height: 110px; }
+  .scene-shell .arena .race-ship.racer > img { height: 138px; }
+  .scene-shell .arena .race-ship > strong { font-size: 10px; letter-spacing: .3px; padding: 2px 4px; }
+  .scene-shell .arena .race-ship > .vital-bar { width: 98%; padding: 0 3px; margin: 4px auto; }
+  .scene-shell .vital-label { display: block; font-size: 8px; margin-bottom: 2px; }
+  .scene-shell .vital-label strong { font-size: 9px; }
+  .scene-shell .vital-track { height: 3px; }
+  .scene-shell #pilot-stats { bottom: 10px; left: 10px; right: 10px; padding: 7px 9px; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 4px 0; }
+  .scene-shell #pilot-stats > div { padding: 0 7px; }
+  .scene-shell #pilot-stats > div:nth-child(2) { grid-column: 1 / -1; grid-row: 1; display: flex; gap: 12px; align-items: center; border: 0; padding: 0; }
+  .scene-shell #pilot-stats span { font-size: 8px; letter-spacing: .7px; }
+  .scene-shell #pilot-stats strong { font-size: 17px; }
+  .scene-shell #pilot-stats #pilot-distance { font-size: 27px; }
+  .scene-shell #pilot-stats > div:nth-child(3) { border-left: 0; padding-left: 0; }
+  .scene-shell .armory { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'skills' 'detail' 'purchase' 'rules'; gap: 9px; padding: 11px 12px 10px; }
+  .scene-shell .boost-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; }
+  .scene-shell .boost-card { padding: 0 1px 5px; gap: 2px; }
+  .scene-shell .boost-icon { width: 55px; height: 51px; margin-bottom: 3px; }
+  .scene-shell .boost-icon > svg { width: 22px; height: 22px; top: 15px; left: 17px; }
+  .scene-shell .boost-card strong { font-size: 12px; letter-spacing: .1px; }
+  .scene-shell .boost-card-stat { font-size: 8px; line-height: 1.25; }
+  .scene-shell .boost-preview { border: 0; padding: 0; margin: 0; }
+  .scene-shell .boost-preview-heading { grid-template-columns: 1fr auto auto; gap: 2px 7px; }
+  .scene-shell .boost-preview-heading > span { font-size: 10px; }
+  .scene-shell .boost-preview-heading > strong { grid-column: 1; grid-row: 2; font-size: 17px; margin: 0; }
+  .scene-shell .boost-details-button { grid-column: 2; grid-row: 1 / span 2; font-size: 10px; min-height: 28px; }
+  .scene-shell .dock-help { grid-column: 3; grid-row: 1 / span 2; width: 20px; height: 20px; min-height: 20px; }
+  .scene-shell #boost-effect, .scene-shell #boost-stat-grid, .scene-shell .boost-preview > small { display: none; }
+  .scene-shell .boost-preview #boost-availability { margin: 3px 0 0; font-size: 9px; line-height: 1.4; }
+  .scene-shell .armory .inline-form { grid-template-columns: 82px minmax(0, 1fr); gap: 9px; }
+  .scene-shell .armory .inline-form label { font-size: 8px; }
+  .scene-shell .armory .inline-form input { height: 36px; min-height: 36px; font-size: 17px; }
+  .scene-shell .armory .inline-form button { height: 36px; min-height: 36px; font-size: 15px; }
+  .scene-shell #boost-rules { font-size: 8px; line-height: 1.45; }
+  .race-console .race-sidebar { display: grid; grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+  .console-tabs button { flex: 1; min-width: 0; font-size: 15px; padding: 10px 8px; }
+  .race-console .standings-panel, .race-console > .panel { padding: 14px !important; }
+  .race-console .standings-panel > .section-head { flex-wrap: wrap; }
+  .race-console .eyebrow { display: none; }
+  .personal-estimate .cycle-your-rewards { grid-template-columns: 1fr 1fr; }
+  #scene-action-feedback { top: 38%; font-size: 19px; padding: 6px 13px; }
+  [data-panel="hangar"] .hangar-intro { padding: 20px; min-height: 150px; }
+  [data-panel="hangar"] .hangar-intro h1 { font-size: 34px; }
+  .mobile-game-nav { background: #040d19f5; border-top: 1px solid #49728c; }
+  .mobile-game-nav button { font: 600 13px Rajdhani, sans-serif; letter-spacing: .5px; text-transform: uppercase; border-radius: 2px; }
+  .mobile-game-nav button.active { background: #1a384647 !important; color: #d3f5ff; box-shadow: inset 0 2px 0 #80c7e8; }
+}
+@media (max-width: 374px) {
+  .brand { font-size: 14px; letter-spacing: .3px; }
+  .scene-hud { left: 7px; right: 7px; padding: 6px; }
+  .scene-hud .stat { padding: 0 4px; }
+  .scene-hud .stat strong { font-size: 19px; }
+  .scene-hud .cycle-pool-values strong { font-size: 19px; }
+  .scene-pilot strong { max-width: 118px; }
+  .scene-state { font-size: 8px; }
+  .scene-shell .boost-icon { width: 48px; height: 46px; }
+  .scene-shell .boost-icon > svg { left: 15px; top: 14px; width: 19px; height: 19px; }
+  .scene-shell .boost-card strong { font-size: 10px; }
+  .scene-shell .boost-card-stat { font-size: 7.5px; }
+  .scene-shell .vital-label strong { font-size: 8px; white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene-shell .arena::before, .scene-shell .arena .race-ship > img, .scene-shell .arena .race-ship::before, .arena.action-feedback #scene-action-feedback { animation: none; }
+  .scene-shell .boost-icon { transition: none; }
+  .scene-shell .boost-card.selected .boost-icon, .scene-shell .boost-card:hover .boost-icon { transform: none; }
+  .arena.action-feedback #scene-action-feedback { opacity: 1; transform: translate(-50%, 0); }
+}

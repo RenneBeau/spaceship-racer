@@ -1,0 +1,17 @@
+name: spaceship-racer-alpha-dev
+services:
+  chain:
+    image: ghcr.io/plasticdigits/localterra-cl8y@sha256:309cdb1215135795ca47f2803cde6c1e7045afcfc6379dd6600bf578148ae81a
+    platform: linux/amd64
+    entrypoint: ["/bin/bash", "/local/start-alpha-chain.sh"]
+    ports:
+      - "127.0.0.1:27659:26657"
+      - "127.0.0.1:1419:1317"
+    volumes:
+      - alpha-chain-data:/home/terra/.terra
+      - ./start-alpha-chain.sh:/local/start-alpha-chain.sh:ro,z
+      - ../target/wasm32-unknown-unknown/release:/artifacts:ro,z
+      - ../../vendor/cl8y-dex-terraclassic/smartcontracts/target/wasm32-unknown-unknown/release:/dex-artifacts:ro,z
+    restart: unless-stopped
+volumes:
+  alpha-chain-data:

@@ -1,0 +1,30 @@
+[workspace]
+resolver = "2"
+members = ["packages/game-common", "contracts/rewards", "contracts/fleet", "contracts/equipment", "contracts/local-token", "contracts/local-bench-token", "contracts/local-lp", "contracts/collection", "contracts/randomness", "contracts/beacon-verifier", "contracts/race", "contracts/pause", "contracts/marketplace", "contracts/recruitment", "contracts/payments", "contracts/reinvestment", "contracts/treasury", "contracts/skins"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "ISC"
+
+[workspace.dependencies]
+cosmwasm-std = "1.5.11"
+cosmwasm-schema = "1.5.11"
+cw-storage-plus = "1.2.0"
+cw2 = "1.1.2"
+cw20 = "1.1.2"
+cw20-base = { version = "1.1.2", features = ["library"] }
+cw721 = "0.18.0"
+cw721-base = { version = "0.18.0", features = ["library"] }
+cw-ownable = "0.5.1"
+cw-multi-test = "1.2.0"
+thiserror = "1.0"
+game-common = { path = "packages/game-common" }
+
+[profile.release]
+opt-level = "s"
+overflow-checks = true
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

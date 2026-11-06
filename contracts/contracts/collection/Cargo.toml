@@ -1,0 +1,18 @@
+[package]
+name = "racer-collection"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-std.workspace = true
+cosmwasm-schema.workspace = true
+cw721-base.workspace = true
+cw-storage-plus.workspace = true
+game-common.workspace = true

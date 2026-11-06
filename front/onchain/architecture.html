@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spaceship Racer — How it works</title>
+  <link rel="stylesheet" href="/architecture/style.css">
+</head>
+<body>
+<main>
+  <header>
+    <nav><a href="/">← Back to the game</a><a href="/architecture/source">Technical map + contract addresses ↗</a></nav>
+    <span class="eyebrow">SPACESHIP RACER</span>
+    <h1>How the game works</h1>
+    <p class="intro">You own a permanent fleet. Races use a snapshot of that fleet. The contracts hold the assets and enforce the rules; the website makes them easier to use.</p>
+    <nav class="jump" aria-label="Page sections"><a href="#play">How a race works</a><a href="#ships">Leveling ships</a><a href="#contracts">Contract roles</a><a href="#money">Money flow</a><a href="#ready">Is it ready?</a></nav>
+  </header>
+
+  <section id="play">
+    <span class="eyebrow">RACES</span><h2>Race flow</h2>
+    <ol class="flow" aria-label="Race lifecycle">
+      <li><b class="step">1</b><h3>Build your fleet</h3><p>Buy ships, level them up and equip commanders or skins.</p><span class="tag">Permanent ownership</span></li>
+      <li><b class="step">2</b><h3>Start a race</h3><p>The game takes your active levels and equipment as its starting snapshot.</p><span class="tag">Fair starting state</span></li>
+      <li><b class="step">3</b><h3>Choose your boosts</h3><p>Spend SRT on speed, acceleration, warp or rockets. Ending opportunities occur every six seconds.</p><span class="tag">Player decisions</span></li>
+      <li><b class="step">4</b><h3>Resolve & repeat</h3><p>The game replays actions, resolves combat and picks the winner. Cycle rewards accumulate for claims.</p><span class="tag">Contract-enforced result</span></li>
+    </ol>
+    <details><summary>Why is the optimized version cheaper?</summary><p>Most of the race records actions and checks whether it ends. It does not rewrite every fleet's movement on every tick. Movement and combat are replayed in bounded batches at the end. The indexer calculates previews for the website; only the on-chain replay determines the outcome. There is no regeneration.</p></details>
+  </section>
+
+  <section id="ships">
+    <span class="eyebrow">SHIPS</span><h2>Upgrading your fleet</h2>
+    <p>Upgrades are permanent, but they do not change a race already in progress.</p>
+    <ol class="flow" aria-label="Ship upgrade lifecycle">
+      <li><b class="step">1</b><h3>Choose a target level</h3><p>Example: your fighter is level 18 and you choose level 19.</p></li>
+      <li><b class="step">2</b><h3>Pay the difference</h3><p>The current price is 1 SpaceUSD per added level. You sign the purchase in your wallet.</p></li>
+      <li><b class="step">3</b><h3>Upgrade is queued</h3><p>You own level 19, but the current race still uses its level-18 snapshot.</p></li>
+      <li><b class="step">4</b><h3>Next race uses level 19</h3><p>The fleet becomes active at the race boundary and the race engine refreshes its ship stats.</p></li>
+    </ol>
+    <div class="callout"><strong>Checked on the live local chain</strong><p>On November 3, 2026, the browser test confirmed a fighter upgrade from 18 → 19: race 286 kept level 18, while level 19 was queued for race 287. This is a verification snapshot, not a live race counter.</p></div>
+    <details><summary>What about multiple upgrades or invalid purchases?</summary><p>Buying 18 → 19 and then 19 → 20 before the next race charges only each additional level. The next race uses level 20. Levels must increase and stay within 1–1000. Buying an already owned ship, upgrading an unowned ship and incorrect payments are rejected. First-purchase referral discounts are separate from standard upgrade pricing.</p></details>
+  </section>
+
+  <section id="contracts">
+    <span class="eyebrow">ARCHITECTURE</span><h2>Contracts and services</h2>
+    <p>Each group handles a different part of the game. Expand a card for details.</p>
+    <div class="departments">
+      <article><span class="icon">01</span><h3>Race engine</h3><p>Runs races, verifies randomness, resolves actions and tracks cycle points.</p><details><summary>Contracts</summary><p><strong>Race engine</strong> (code 48), <strong>stateless tick verifier</strong> (code 47) and the <strong>randomness adapter</strong>. They verify future drand proofs; the keeper cannot choose the random result.</p></details></article>
+      <article><span class="icon">02</span><h3>Ships and equipment</h3><p>Stores ship levels and equipped items, including changes queued for next race.</p><details><summary>Contracts</summary><p><strong>Fleet</strong> stores permanent levels; <strong>equipment</strong> holds equipped NFTs and processes changes at boundaries. The race engine reads these to build race snapshots.</p></details></article>
+      <article><span class="icon">03</span><h3>Commanders, skins and trading</h3><p>Handles draws, fusion, skin rewards and player listings.</p><details><summary>Contracts</summary><p><strong>Recruitment/fusion</strong>, <strong>commander collection</strong>, <strong>milestone skins</strong>, <strong>skin collection</strong> and <strong>marketplace</strong>. Equipment custody and marketplace sale escrow are separate.</p></details></article>
+      <article><span class="icon">04</span><h3>Payments and rewards</h3><p>Processes purchases, holds reward reserves and records claimable balances.</p><details><summary>Contracts</summary><p><strong>Payments</strong> routes supported tokens through the <strong>CL8Y DEX</strong> to settle SpaceUSD invoices. <strong>Rewards</strong> holds funded reserves and claims. <strong>Capital treasury</strong> converts revenue and dispatches capital to <strong>Collapsar</strong>, separately from prize reserves. Payment tokens: cLUNC, cUSTC, UST1, SpaceUSD and SRT.</p></details></article>
+      <article><span class="icon">05</span><h3>Teams & controls</h3><p>Handles clan membership and the shared emergency pause.</p><details><summary>Contracts</summary><p><strong>Clans</strong> tracks current and queued memberships and integrates with cycle scoring. <strong>Pause</strong> is checked by configured game modules and NFT collections.</p></details></article>
+      <article><span class="icon">06</span><h3>Website, indexer and keeper</h3><p>Displays game data, indexes history and submits pending race transactions.</p><details><summary>Off-chain services</summary><p><strong>Your wallet</strong> signs purchases and actions. The <strong>read-only indexer/API</strong> uses SQLite and calculates previews. The <strong>keeper</strong> relays proofs and executes bounded work with its own LUNC gas balance. A <strong>health timer</strong> checks chain freshness and index lag.</p></details></article>
+    </div>
+  </section>
+
+  <section id="money">
+    <span class="eyebrow">ECONOMICS</span><h2>Boost fees and gas costs</h2>
+    <div class="money" aria-label="Boost payment distribution">
+      <div class="payment"><h3>You pay SRT for boosts</h3><p>The race contract holds it until it knows which actions were used.</p></div>
+      <div class="branches">
+        <article><strong>95%</strong><h3>Prize allocation</h3><p>Of executed boost spending.</p></article>
+        <article><strong>5%</strong><h3>Operator fee</h3><p>Of executed boost spending, paid in SRT.</p></article>
+        <article><strong>Unused</strong><h3>Refundable to you</h3><p>Unused boost payments earn no operator fee.</p></article>
+      </div>
+    </div>
+    <div class="callout"><strong>The keeper pays LUNC gas.</strong><p>SRT fee revenue does not automatically become LUNC. The economic target is for the realizable value of the 5% fee to cover all keeper gas. Equal hourly activity must be measured to prove that.</p></div>
+  </section>
+
+  <section id="ready">
+    <span class="eyebrow">DEVELOPMENT</span><h2>Current status</h2>
+    <div class="readiness">
+      <article><span class="tag">Verified gameplay</span><h3>Ship upgrades verified</h3><p>42 fleet/race tests passed, covering upgrades, next-race activation, refunds, combat, repair and bounded 1,000-player execution. Fractional progress, automatic reward upgrades and fleet revival were also verified with compiled contracts and real randomness proofs.</p></article>
+      <article><span class="tag pending">Next validation</span><h3>Prove active-game margins</h3><p>Measure actual 5% SRT income against total LUNC keeper fees for utility-heavy, rocket-heavy and mixed games. That result will tell us whether pricing or contract changes are needed.</p></article>
+    </div>
+    <p class="note">This is the LocalTerra test deployment. These checks establish working flows, not a complete production-readiness assessment. The current keeper uses local test keys; production deployment and operating configuration still need their own validation.</p>
+  </section>
+  <footer><a href="/">← Back to the game</a><a href="/architecture/source">Full technical diagrams and contract address directory ↗</a></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[package]
+name = "racer-randomness"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-std.workspace = true
+cosmwasm-schema.workspace = true
+cw-storage-plus.workspace = true
+cw2.workspace = true
+game-common.workspace = true
+drand-verify = "=0.6.2"
+hex = "0.4"

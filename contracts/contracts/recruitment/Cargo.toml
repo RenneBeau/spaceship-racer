@@ -1,0 +1,33 @@
+[package]
+name = "racer-recruitment"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-std.workspace = true
+cosmwasm-schema.workspace = true
+cw-storage-plus.workspace = true
+cw2.workspace = true
+cw20.workspace = true
+cw721.workspace = true
+cw-ownable.workspace = true
+game-common.workspace = true
+racer-collection = { path = "../collection", features = ["library"] }
+racer-randomness = { path = "../randomness", features = ["library"] }
+
+[dev-dependencies]
+cw-multi-test.workspace = true
+cw20-base.workspace = true
+racer-pause = { path = "../pause" }
+racer-marketplace = { path = "../marketplace", features = ["library"] }
+racer-equipment = { path = "../equipment", features = ["library"] }
+racer-fleet = { path = "../fleet", features = ["library"] }
+racer-rewards = { path = "../rewards", features = ["library"] }
+racer-race = { path = "../race" }

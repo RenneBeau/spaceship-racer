@@ -1,0 +1,17 @@
+[package]
+name = "racer-beacon-verifier"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-std.workspace = true
+cosmwasm-schema.workspace = true
+cw2.workspace = true
+racer-randomness = { path = "../randomness", features = ["library"] }
