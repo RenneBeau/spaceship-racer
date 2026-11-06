@@ -39,7 +39,7 @@ const localBoostReceipts = new Map();
 let rocketQuote = null;
 function renderGuidance() {
   const own = connectedProfile;
-  $('guide-wallet').textContent = wallet.address ? `Connected ${short(wallet.address)}. Keep native LUNC available for network gas.` : 'Connect Keplr or Leap to own ships and sign actions. You can watch without connecting.';
+  $('guide-wallet').textContent = wallet.address ? `Connected ${short(wallet.address)}. Keep native LUNC available for network gas.` : 'Connect Keplr to own ships and sign actions. You can watch without connecting.';
   $('guide-connect').hidden = !!wallet.address;
   $('guide-fleet').textContent = own?.fleet.purchased ? 'Your fleet is permanent. Add ships or pay only for the levels you add.' : 'Start with a racer in the hangar. Ship invoices settle in SpaceUSD; native LUNC pays network gas.';
   const participating = own?.player?.race === state.game.race;
@@ -360,7 +360,7 @@ function updateButtons() {
   for (const id of ['claim-rewards', 'profile-claim']) {
     if (!connectedProfile || (BigInt(connectedProfile.credit.srt) === 0n && BigInt(connectedProfile.credit.spaceusd) === 0n)) $(id).disabled = true;
   }
-  $('connect').disabled = busy; $('leap').disabled = busy;
+  $('connect').disabled = busy;
   $('disconnect').hidden = !wallet?.address;
   $('connect').textContent = wallet?.address ? short(wallet.address) : 'Connect Keplr';
   $('signer-status').textContent = wallet?.address ? `Signing wallet ${short(wallet.address)}` : 'Spectator mode · wallet signatures authorize every action';
@@ -658,8 +658,8 @@ async function start() {
   limitInput.addEventListener('input', updateButtons);
   $('network').textContent = config.alpha ? 'Alpha · test assets' : config.chainId === 'spaceship-racer-local' ? 'LocalTerra · test assets' : config.chainName;
   document.querySelectorAll('[data-token-select]').forEach(tokenSelect);
-  for (const [id, provider] of [['connect', 'keplr'], ['leap', 'leap']]) $(id).addEventListener('click', async () => {
-    try { await wallet.connect(provider); await setWatched(wallet.address); restorePilotIdentity(); notice(`Connected ${wallet.address}`); if (!pilotIdentity()) openPilot(true); } catch (error) { notice(error.message, true); } updateButtons();
+  $('connect').addEventListener('click', async () => {
+    try { await wallet.connect(); await setWatched(wallet.address); restorePilotIdentity(); notice(`Connected ${wallet.address}`); if (!pilotIdentity()) openPilot(true); } catch (error) { notice(error.message, true); } updateButtons();
   });
   function disconnectPilot() { wallet.disconnect(); connectedProfile = null; purchasePreview = null; $('pilot-dialog').close(); $('purchase-dialog').close(); renderResources(); updateButtons(); }
   $('disconnect').addEventListener('click', () => { disconnectPilot(); notice('Wallet disconnected. Public chain views remain available.'); });
@@ -670,7 +670,6 @@ async function start() {
     catch { connectedProfile = null; renderResources(); updateButtons(); notice('Unlock your wallet and reconnect to switch accounts.'); }
   }
   window.addEventListener('keplr_keystorechange', () => void changedAccount());
-  window.addEventListener('leap_keystorechange', () => void changedAccount());
   $('open-profile').addEventListener('click', async () => { if (wallet.address && watched !== wallet.address) await setWatched(wallet.address); navigate('profile'); });
   $('close-profile').addEventListener('click', () => $('pilot-dialog').close());
   $('pilot-dialog').addEventListener('cancel', event => { if (!pilotIdentity()) event.preventDefault(); });

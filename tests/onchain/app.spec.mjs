@@ -336,7 +336,7 @@ test('first-flight guidance distinguishes queued levels and quotes exact boost t
   await page.goto(`/?wallet=${deployment.owner}`);
   await expect(page.locator('#notice')).toContainText('Flight deck ready');
   await expect(page.locator('#flight-guide')).toContainText('Boosts are optional');
-  await expect(page.locator('#guide-wallet')).toContainText('Connect Keplr or Leap');
+  await expect(page.locator('#guide-wallet')).toContainText('Connect Keplr');
   await expect(page.locator('#boost-rules')).toContainText('90% prize allocation · 10% service fee');
   await page.locator('#boost-form input[name=count]').fill('3');
   await expect(page.locator('#boost-cost')).toContainText('3.703701 SRT');

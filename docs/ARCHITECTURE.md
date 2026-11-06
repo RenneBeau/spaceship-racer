@@ -3,7 +3,7 @@
 ```mermaid
 flowchart LR
     Player[Player] --> UI[Wallet UI]
-    UI --> Wallet[Keplr / Leap]
+    UI --> Wallet[Keplr]
     UI --> API[Read-only API]
     Wallet --> Gateway[RPC / LCD gateway]
     Gateway --> Chain[Terra / CosmWasm]
@@ -38,7 +38,7 @@ events into SQLite, and exposes history, balances, leaderboards and projections.
 Fork handling rewinds indexed state. Projected distance is display-only.
 
 `front/onchain` is bundled with esbuild. It constructs transactions and delegates
-signatures to Keplr/Leap. The hangar compares owned base stats with target-level
+signatures to Keplr. The hangar compares owned base stats with target-level
 stats; tank repair examples use the deployed repair formula. Damaged race state
 is distinct from next-race upgraded state.
 

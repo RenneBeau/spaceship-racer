@@ -9,7 +9,7 @@
 ![Spaceship Racer hangar artwork](front/ui-assets/scene-hangar.webp)
 
 Spaceship Racer is a Terra Classic game with CosmWasm contracts, a responsive
-Keplr/Leap wallet interface, a read-only indexer, and a keeper that advances races
+Keplr wallet interface, a read-only indexer, and a keeper that advances races
 and relays verifiable drand randomness.
 
 This is the standalone source repository for the current on-chain implementation.

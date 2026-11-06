@@ -16,11 +16,12 @@ export class Wallet {
   }
   async query(contract, msg) { return (await this.reader()).queryContractSmart(contract, msg); }
   session() {
-    try { const value = JSON.parse(localStorage.getItem(`racer.wallet.${this.config.chainId}`) ?? 'null'); return ['keplr', 'leap'].includes(value?.provider) ? value : null; } catch { return null; }
+    try { const value = JSON.parse(localStorage.getItem(`racer.wallet.${this.config.chainId}`) ?? 'null'); return value?.provider === 'keplr' ? value : null; } catch { return null; }
   }
   async connect(name = 'keplr', restoring = false) {
+    if (name !== 'keplr') throw new Error('Connect using Keplr.');
     const provider = window[name];
-    if (!provider) throw new Error(`Open this page with ${name === 'leap' ? 'Leap' : 'Keplr'} available`);
+    if (!provider) throw new Error('Open this page with Keplr available');
     if (this.config.alpha && this.config.chainId === 'spaceship-racer-alpha' && this.config.portalWalletAccess) {
       const response = await fetch(appPath('/wallet-access'), { method: 'POST' });
       if (!response.ok) throw new Error('Sign in to the hosting portal with an authorized alpha wallet again, then reconnect.');

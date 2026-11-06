@@ -21,8 +21,8 @@ not run; do not represent unit tests as end-to-end proof.
 
 ## Conventions
 
-- Keep wallet transaction construction in the frontend and signing in Keplr or
-  Leap. The indexer must stay read-only.
+- Keep wallet transaction construction in the frontend and signing in Keplr.
+  The indexer must stay read-only.
 - Preserve exact token units and rounding. Use integers/BigInt for accounting.
 - Race state is authoritative on-chain. UI estimates must be identified as such.
 - Purchases/upgrades activate at the next race boundary; do not mutate current
