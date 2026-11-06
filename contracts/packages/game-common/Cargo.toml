@@ -8,5 +8,5 @@ license.workspace = true
 cosmwasm-std.workspace = true
 cosmwasm-schema.workspace = true
 cw-storage-plus.workspace = true
-sha2 = "0.10"
+sha2 = "0.11"
 cw20.workspace = true

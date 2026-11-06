@@ -14,7 +14,7 @@ cw-storage-plus.workspace = true
 cw2.workspace = true
 cw20.workspace = true
 game-common.workspace = true
-sha2 = "0.10"
+sha2 = "0.11"
 racer-fleet = { path = "../fleet", features = ["library"] }
 racer-equipment = { path = "../equipment", features = ["library"] }
 racer-rewards = { path = "../rewards", features = ["library"] }
