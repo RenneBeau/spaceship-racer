@@ -24,7 +24,6 @@ invite-only; this repository does not grant access to that deployment.
 - **Permanent ownership:** buy ships and levels; upgrades become active at the
   next race boundary, preserving the current race's snapshot.
 - **On-chain boosts:** overdrive, acceleration, warp, rockets and paid repair.
-  Ships do not passively regenerate HP.
 - **Verifiable randomness:** future drand rounds, BLS proof verification,
   distance-weighted winners and bounded race processing.
 - **Fleet progression:** commanders, fusion, skins, clans, an NFT marketplace,
