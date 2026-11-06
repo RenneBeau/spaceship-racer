@@ -13,7 +13,7 @@ cosmwasm-schema = "1.5.11"
 cw-storage-plus = "1.2.0"
 cw2 = "1.1.2"
 cw20 = "1.1.2"
-cw20-base = { version = "1.1.2", features = ["library"] }
+cw20-base = { version = "2.0.0", features = ["library"] }
 cw721 = "0.18.0"
 cw721-base = { version = "0.18.0", features = ["library"] }
 cw-ownable = "0.5.1"
